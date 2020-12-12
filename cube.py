@@ -50,22 +50,22 @@ class Cube :
     def setSide(self,face,col,sl):
         if face == "front" :
             for i in range(3) :
-                self.front[col][i] = sl[i]
+                self.front[i][col] = sl[i]
         elif face == "left" :
             for i in range(3) :
-                self.left[col][i] = sl[i]
+                self.left[i][col] = sl[i]
         elif face == "right" :
             for i in range(3) :
-                self.right[col][i] = sl[i]
+                self.right[i][col] = sl[i]
         elif face == "up" :
             for i in range(3) :
-                self.up[col][i] = sl[i]
+                self.up[i][col] = sl[i]
         elif face == "down" :
             for i in range(3) :
-                self.down[col][i] = sl[i]
+                self.down[i][col] = sl[i]
         elif face == "back" :
             for i in range(3) :
-                self.back[col][i] = sl[i]
+                self.back[i][col] = sl[i]
             
     #F입력받았을때
     def enterF(self):
@@ -74,14 +74,13 @@ class Cube :
         us = self.up[0]
         ds = self.down[0]
 
-        sl = self.sideRotation(ls,rs,us,ds)
+        sl = self.sideRotation(ls,ds,rs,us)
         
         self.up[0] = sl[3]
         self.down[0] = sl[1]
         self.setSide("left",2,sl[0])
         self.setSide("right",0,sl[2])
-        self.front = self.faceRotation(self.front)
-        
+        self.front = self.faceRotation(self.front)        
     #현재 큐브 상태 출력
     def printCube(self) :
         for row in range(2,-1,-1) :
