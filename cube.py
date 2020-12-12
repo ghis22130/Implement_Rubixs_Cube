@@ -3,7 +3,6 @@
 
 # In[]:
 
-
 import copy
 import time
 
@@ -16,7 +15,9 @@ class Cube :
         self.up = [["B" for _ in range(3)] for _ in range(3)]
         self.down = [["R" for _ in range(3)] for _ in range(3)]
         self.back = [["Y" for _ in range(3)] for _ in range(3)]
-        self.finish = [self.front,self.right,self.left,self.up,self.down,self.back]
+        self.finish = [[["O" for _ in range(3)] for _ in range(3)],[["G" for _ in range(3)] for _ in range(3)],
+                       [["W" for _ in range(3)] for _ in range(3)],[["B" for _ in range(3)] for _ in range(3)],
+                       [["R" for _ in range(3)] for _ in range(3)],[["Y" for _ in range(3)] for _ in range(3)]]
     
     # 회전해야할 옆면들을 하나의 배열로 묶어줍니다
     def setSideList(self,side1,side2,side3,side4):
@@ -282,6 +283,11 @@ class Cube :
             for col in row :
                 print(col,end=" ")
             print()
+    def isFinish(self):
+        if self.finish == [self.front,self.right,self.left,self.up,self.down,self.back] :
+            return True
+        else:
+            return False
 
 cube = Cube()
 cube.printCube()
@@ -289,17 +295,20 @@ count = 0
 start_time = time.time()
 isGoing = True
 
+def exitCube():
+    t = time.strftime('%M:%S',time.localtime(time.time()-start_time))
+    print("경과시간: ",t)
+    print("조작갯수: ",count)
+    print("이용해주셔서 감사합니다. 뚜뚜뚜.")
+    
 while(isGoing):
     msg = input("CUBE> ")    
     for idx, i in enumerate(msg) :
         if i =="'" : # ' 이면 아무런 동작 수행하지 않는다.
             continue
         if i == "Q" : # "Q" 입력시 실행 종료
-            isGoing=False
-            t = time.strftime('%M:%S',time.localtime(time.time()-start_time))
-            print("경과시간: ",t)
-            print("조작갯수: ",count)
-            print("이용해주셔서 감사합니다. 뚜뚜뚜.")
+            isGoint = False
+            exitCube()
             break
         
         count+=1
@@ -332,5 +341,10 @@ while(isGoing):
                 cube.enterD()
             print(i) #현재 수행한 명령을 출력
         cube.printCube() #명령 수행 후 변환된 큐브 출력
+        if cube.isFinish() :
+            isGoing=False
+            print("🙊축하합니다 루빅스 큐브 완성!")
+            exitCube()
+            break
 
 # %%
