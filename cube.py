@@ -5,6 +5,7 @@
 
 
 import copy
+import time
 
 class Cube :
     #6면체 색상 셋팅
@@ -284,6 +285,8 @@ class Cube :
 
 cube = Cube()
 cube.printCube()
+count = 0
+start_time = time.time()
 isGoing = True
 
 while(isGoing):
@@ -292,9 +295,14 @@ while(isGoing):
         if i =="'" : # ' 이면 아무런 동작 수행하지 않는다.
             continue
         if i == "Q" : # "Q" 입력시 실행 종료
-            isGoing=False 
-            print("bye~")
+            isGoing=False
+            t = time.strftime('%M:%S',time.localtime(time.time()-start_time))
+            print("경과시간: ",t)
+            print("조작갯수: ",count)
+            print("이용해주셔서 감사합니다. 뚜뚜뚜.")
             break
+        
+        count+=1
         if idx != len(msg)-1 and  msg[idx+1] =="'" : #현재 위치가 입력 문자열에 맨 끝이 아니고 다음 문자에 ' 가 있는 경우
             if i == "U":
                 cube.enterUr()
@@ -308,7 +316,6 @@ while(isGoing):
                 cube.enterFr()
             elif i == "D":
                 cube.enterDr()
-                
             print(i+"'")
         else :  #'를 수행하지 않는 입력
             if i == "U":
@@ -325,4 +332,5 @@ while(isGoing):
                 cube.enterD()
             print(i) #현재 수행한 명령을 출력
         cube.printCube() #명령 수행 후 변환된 큐브 출력
+
 # %%
