@@ -15,7 +15,7 @@ class Cube :
         self.up = [["B" for _ in range(3)] for _ in range(3)]
         self.down = [["R" for _ in range(3)] for _ in range(3)]
         self.back = [["Y" for _ in range(3)] for _ in range(3)]
-        self.myCube = [front,right,left,up,down,back]
+        self.finish = [front,right,left,up,down,back]
     
     # 회전해야할 옆면들을 하나의 배열로 묶어줍니다
     def setSideList(self,side1,side2,side3,side4):
@@ -46,6 +46,14 @@ class Cube :
             for c in range(N):
                 ret[c][N-1-r] = face[r][c]
         return ret
+    
+    #회전하고자 하는 면을 반시계방향으로 90도 회전
+    def faceReverseRotate(key):
+        ret = []
+        for k in list(zip(*key)):
+            ret.append(list(k))
+        return ret
+    
     #회전된 옆면을 적용
     def setSide(self,face,col,sl):
         if face == "front" :
@@ -75,12 +83,85 @@ class Cube :
         ds = self.down[0]
 
         sl = self.sideRotation(ls,ds,rs,us)
-        
         self.up[0] = sl[3]
         self.down[0] = sl[1]
         self.setSide("left",2,sl[0])
         self.setSide("right",0,sl[2])
-        self.front = self.faceRotation(self.front)        
+        self.front = self.faceRotation(self.front)
+    
+    #L입력받았을때
+    def enterL(self):
+        ls = self.getLeftSide(self.back)
+        rs = self.getRightSide(self.front)
+        us = self.getLeftSide(self.up)
+        ds = self.getRightSide(self.down)
+
+        sl = self.sideRotation(ls,ds,rs,us)
+        
+        self.setSide("up",2,sl[3])
+        self.setSide("down",0,sl[1])
+        self.setSide("back",2,sl[0])
+        self.setSide("front",0,sl[2])
+        self.left = self.faceRotation(self.left)
+    
+    #R입력받았을때
+    def enterR(self):
+        ls = self.getLeftSide(self.front)
+        rs = self.getRightSide(self.back)
+        us = self.getRightSide(self.up)
+        ds = self.getLeftSide(self.down)
+
+        sl = self.sideRotation(ls,ds,rs,us)
+        self.setSide("up",0,sl[3])
+        self.setSide("down",2,sl[1])
+        self.setSide("back",0,sl[2])
+        self.setSide("front",2,sl[0])
+        self.right = self.faceRotation(self.right)
+    
+    #B입력받았을때
+    def enterB(self):
+        ls = self.getLeftSide(self.right)
+        rs = self.getRightSide(self.left)
+        us = self.up[2]
+        ds = self.down[2]
+
+        sl = self.sideRotation(ls,ds,rs,us)
+        self.up[2] = sl[3]
+        self.down[2] = sl[1]
+        self.setSide("right",2,sl[0])
+        self.setSide("left",0,sl[2])
+        self.back = self.faceRotation(self.back)
+        
+    #U입력받았을때
+    def enterU(self):
+        ls = self.right[0]
+        rs = self.left[0]
+        us = self.front[0]
+        ds = self.back[0]
+
+        sl = self.sideRotation(ls,ds,rs,us)
+        self.left[0] = sl[2]
+        self.back[0] = sl[1]
+        self.right[0] = sl[0]
+        self.front[0] = sl[3]
+        
+        self.up = self.faceRotation(self.up)
+          
+    #D입력받았을때
+    def enterD(self):
+        ls = self.left[2]
+        rs = self.right[2]
+        us = self.front[2]
+        ds = self.back[2]
+
+        sl = self.sideRotation(ls,ds,rs,us)
+        self.left[2] = sl[0]
+        self.back[2] = sl[1]
+        self.right[2] = sl[2]
+        self.front[2] = sl[3]
+        
+        self.down = self.faceRotation(self.down)
+        
     #현재 큐브 상태 출력
     def printCube(self) :
         for row in range(2,-1,-1) :
@@ -146,4 +227,4 @@ while(isGoing):
             elif i == "D":
                 cube.enterD()
             print(i) #현재 수행한 명령을 출력
-    cube.printCube() #명령 수행 후 변환된 큐브 출력
+        cube.printCube() #명령 수행 후 변환된 큐브 출력
