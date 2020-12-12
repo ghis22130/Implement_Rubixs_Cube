@@ -5,6 +5,7 @@
 
 import copy
 import time
+import random
 
 class Cube :
     #6면체 색상 셋팅
@@ -15,6 +16,7 @@ class Cube :
         self.up = [["B" for _ in range(3)] for _ in range(3)]
         self.down = [["R" for _ in range(3)] for _ in range(3)]
         self.back = [["Y" for _ in range(3)] for _ in range(3)]
+        self.myCube = [self.front, self.right, self.left, self.up, self.down, self.back]
         self.finish = [[["O" for _ in range(3)] for _ in range(3)],[["G" for _ in range(3)] for _ in range(3)],
                        [["W" for _ in range(3)] for _ in range(3)],[["B" for _ in range(3)] for _ in range(3)],
                        [["R" for _ in range(3)] for _ in range(3)],[["Y" for _ in range(3)] for _ in range(3)]]
@@ -270,7 +272,6 @@ class Cube :
                 print(col,end=" ")
             print()
 
-    
         for i in range(3):
             print(self.left[i][0],self.left[i][1],self.left[i][2],end="   ")
             print(self.front[i][0],self.front[i][1],self.front[i][2],end ="   ")
@@ -283,13 +284,36 @@ class Cube :
             for col in row :
                 print(col,end=" ")
             print()
+            
     def isFinish(self):
         if self.finish == [self.front,self.right,self.left,self.up,self.down,self.back] :
             return True
         else:
             return False
-
+    
+    #큐브를 섞어주는 함수
+    def mixCube(self):
+        rdic = {0:"O", 1:"G", 2:"W", 3:"B", 4:"R", 5:"Y"}
+        rlist = [8]*6
+        
+        for idx, face in enumerate(self.myCube):
+            for row, i in enumerate(face):
+                 for col, j in enumerate(i):
+                    while(True):
+                        r = random.randint(0,5)
+                        if rlist[r] == 0 :
+                            continue
+                        else:
+                            break
+                    if row == 1 and col == 1 :
+                        continue
+                    face[row][col] = rdic[r]
+                    rlist[r]-=1
+            
+        
+        
 cube = Cube()
+cube.mixCube()
 cube.printCube()
 count = 0
 start_time = time.time()
